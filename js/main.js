@@ -24,9 +24,11 @@ function getRandomColor() {
 function addColorsToCells() {
     const cells = document.querySelectorAll('td');
 
-    cells.forEach(cell => {
+    cells.forEach((cell, index) => {
         const cellContent = cell.textContent.trim();
-        if (isShiftTime(cellContent)) {
+
+        // Check if the cell is in the range from the 10th column to the penultimate column
+        if (index % 10 >= 9 && index % 10 < cells.length % 10 - 1 && isShiftTime(cellContent)) {
             cell.style.backgroundColor = getRandomColor();
         }
     });
