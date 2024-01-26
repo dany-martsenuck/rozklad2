@@ -28,11 +28,12 @@ function addColorsToCells() {
         const cellContent = cell.textContent.trim();
 
         // Check if the cell is in the range from the 10th column to the penultimate column
-        if (index % 10 >= 9 && index % 10 < cells.length % 10 - 1 && isShiftTime(cellContent)) {
+        if (index % (cells.length / 10) >= 9 && index % (cells.length / 10) < cells.length % (cells.length / 10) - 1 && isShiftTime(cellContent)) {
             cell.style.backgroundColor = getRandomColor();
         }
     });
 }
+
 
 // Function to check if a given time represents a shift
 function isShiftTime(time) {
