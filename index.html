@@ -17,51 +17,14 @@
     <button id="sortButton">Sort</button>
     <button id="filterButton">Filter</button>
     <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Employee Name</th>
-                <th scope="col">Shift Time</th>
-                <!-- Add more columns as needed -->
-            </tr>
+        <thead id="tableHeaders">
+            <!-- Table headers will be dynamically added here -->
         </thead>
         <tbody id="scheduleTableBody">
             <!-- Table rows will be dynamically added here -->
         </tbody>
     </table>
 </div>
-
-<script>
-// Function to render the employee schedule table
-function renderTable(data) {
-    const tableBody = document.getElementById('scheduleTableBody');
-    tableBody.innerHTML = '';
-
-    data.forEach(row => {
-        const rowElement = document.createElement('tr');
-
-        // Displaying data in two columns: Employee Name and Shift Time
-        const cell1 = document.createElement('td');
-        cell1.textContent = row['Employee Name'];
-        rowElement.appendChild(cell1);
-
-        const cell2 = document.createElement('td');
-        cell2.textContent = row['Shift Time'];
-        rowElement.appendChild(cell2);
-
-        // Add more cells/columns as needed
-
-        tableBody.appendChild(rowElement);
-    });
-}
-
-// Fetch data and render table on page load
-document.addEventListener('DOMContentLoaded', async () => {
-    const scheduleData = await fetchData();
-    if (scheduleData) {
-        renderTable(scheduleData.data);
-    }
-});
-</script>
 
 </body>
 </html>
