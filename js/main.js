@@ -77,31 +77,6 @@ function handleFiltering(columnIndex, filterValue) {
 
 // ... (Other functions)
 
-// Example: Adding random colors to cells on button click
-const addColorsButton = document.getElementById('addColorsButton');
-addColorsButton.addEventListener('click', () => {
-    addColorsToCells();
-});
-
-// Example: Adding event listeners for sorting and filtering
-const sortButton = document.getElementById('sortButton');
-sortButton.addEventListener('click', () => {
-    handleSorting(0); // Sort based on the first column (index 0)
-});
-
-const filterButton = document.getElementById('filterButton');
-filterButton.addEventListener('click', () => {
-    handleFiltering(1, 'desiredFilterValue'); // Filter based on the second column (index 1) and a specific value
-});
-
-// Fetch data and render table on page load
-document.addEventListener('DOMContentLoaded', async () => {
-    const scheduleData = await fetchData();
-    if (scheduleData) {
-        renderTable(scheduleData.data);
-    }
-});
-
 // Function to render the employee schedule table
 function renderTable(data) {
     const tableBody = document.getElementById('scheduleTableBody');
@@ -130,3 +105,28 @@ function renderTable(data) {
         tableBody.appendChild(rowElement);
     });
 }
+
+// Example: Adding random colors to cells on button click
+const addColorsButton = document.getElementById('addColorsButton');
+addColorsButton.addEventListener('click', () => {
+    addColorsToCells();
+});
+
+// Example: Adding event listeners for sorting and filtering
+const sortButton = document.getElementById('sortButton');
+sortButton.addEventListener('click', () => {
+    handleSorting(0); // Sort based on the first column (index 0)
+});
+
+const filterButton = document.getElementById('filterButton');
+filterButton.addEventListener('click', () => {
+    handleFiltering(1, 'desiredFilterValue'); // Filter based on the second column (index 1) and a specific value
+});
+
+// Fetch data and render table on page load
+document.addEventListener('DOMContentLoaded', async () => {
+    const scheduleData = await fetchData();
+    if (scheduleData) {
+        renderTable(scheduleData.data);
+    }
+});
