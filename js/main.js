@@ -20,20 +20,19 @@ function getRandomColor() {
     return color;
 }
 
-// Function to add colors to cells based on shift time
-function addColorsToCells() {
+// Function to add colors to cells based on shift time in specified columns
+function addColorsToCells(columns) {
     const cells = document.querySelectorAll('td');
 
     cells.forEach((cell, index) => {
         const cellContent = cell.textContent.trim();
 
-        // Check if the cell is in the range from the 10th column to the penultimate column
-        if (index % (cells.length / 10) >= 9 && index % (cells.length / 10) < cells.length % (cells.length / 10) - 1 && isShiftTime(cellContent)) {
+        // Check if the cell is in the specified columns and has a shift time
+        if (columns.includes(index % (cells.length / 10)) && isShiftTime(cellContent)) {
             cell.style.backgroundColor = getRandomColor();
         }
     });
 }
-
 
 // Function to check if a given time represents a shift
 function isShiftTime(time) {
@@ -76,9 +75,13 @@ function handleFiltering(columnIndex, filterValue) {
     });
 }
 
-// Your additional functions and logic go here
-
-// ... (Other functions)
+// Fetch data and render table on page load
+document.addEventListener('DOMContentLoaded', async () => {
+    const scheduleData = await fetchData();
+    if (scheduleData) {
+        renderTable(scheduleData.data);
+    }
+});
 
 // Function to render the employee schedule table
 function renderTable(data) {
@@ -107,13 +110,11 @@ function renderTable(data) {
         });
         tableBody.appendChild(rowElement);
     });
-}
 
-// Example: Adding random colors to cells on button click
-const addColorsButton = document.getElementById('addColorsButton');
-addColorsButton.addEventListener('click', () => {
-    addColorsToCells();
-});
+    // Example: Adding random colors to cells in columns 10 to penultimate column
+    const columnsToColor = Array.from({ length: data.length / 10 }, (_, i) => i);
+    addColorsToCells(columnsToColor);
+}
 
 // Example: Adding event listeners for sorting and filtering
 const sortButton = document.getElementById('sortButton');
@@ -124,12 +125,4 @@ sortButton.addEventListener('click', () => {
 const filterButton = document.getElementById('filterButton');
 filterButton.addEventListener('click', () => {
     handleFiltering(1, 'desiredFilterValue'); // Filter based on the second column (index 1) and a specific value
-});
-
-// Fetch data and render table on page load
-document.addEventListener('DOMContentLoaded', async () => {
-    const scheduleData = await fetchData();
-    if (scheduleData) {
-        renderTable(scheduleData.data);
-    }
 });
