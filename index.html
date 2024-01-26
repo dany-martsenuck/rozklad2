@@ -3,13 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script defer src="js/main.js"></script>
     <title>Employee Schedule</title>
 </head>
 <body>
-    <table id="scheduleTable">
-        <!-- Table content will be generated dynamically -->
+
+<!-- Replace the following with your actual HTML structure -->
+<div class="container">
+    <h1>Employee Schedule</h1>
+    <button id="addColorsButton">Add Colors</button>
+    <button id="sortButton">Sort</button>
+    <button id="filterButton">Filter</button>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Column 1</th>
+                <th scope="col">Column 2</th>
+                <!-- Add more columns as needed -->
+            </tr>
+        </thead>
+        <tbody id="scheduleTableBody">
+            <!-- Table rows will be dynamically added here -->
+        </tbody>
     </table>
-    <script src="script.js"></script>
+</div>
+
+<script>
+// Your actual table rendering logic goes here
+function renderTable(data) {
+    const tableBody = document.getElementById('scheduleTableBody');
+    tableBody.innerHTML = '';
+
+    data.forEach(row => {
+        const rowElement = document.createElement('tr');
+
+        // Example: Displaying data in two columns
+        const cell1 = document.createElement('td');
+        cell1.textContent = row['Column 1'];
+        rowElement.appendChild(cell1);
+
+        const cell2 = document.createElement('td');
+        cell2.textContent = row['Column 2'];
+        rowElement.appendChild(cell2);
+
+        // Add more cells/columns as needed
+
+        tableBody.appendChild(rowElement);
+    });
+}
+
+// Function to add colors to cells based on shift time
+function addColorsToCells() {
+    const cells = document.querySelectorAll('td');
+
+    cells.forEach(cell => {
+        const cellContent = cell.textContent.trim();
+        if (isShiftTime(cellContent)) {
+            cell.style.backgroundColor = getRandomColor();
+        }
+    });
+}
+
+// Function to check if a given time represents a shift
+function isShiftTime(time) {
+    return /^([01]\d|2[0-3]):([0-5]\d)$/.test(time);
+}
+
+// Function to handle sorting
+function handleSorting(columnIndex) {
+    const rows = Array.from(document.querySelectorAll('tbody tr'));
+
+    rows.sort((a, b) => {
+        const aValue = a.children[columnIndex].textContent.trim();
+        const bValue = b.children[columnIndex].textContent.trim();
+
+        // Example: Sorting based on alphanumeric values
+        return aValue.localeCompare(bValue, undefined, { numeric: true, sensitivity: 'base' });
+    });
+
+    const tableBody = document.getElementById('scheduleTableBody');
+    tableBody.innerHTML = '';
+
+    rows.forEach(row => {
+        tableBody.appendChild(row);
+    });
+}
+
+// Function to handle filtering
+function handleFiltering(columnIndex, filterValue) {
+    const rows = Array.from(document.querySelectorAll('tbody tr'));
+
+    rows.forEach(row => {
+        const cellValue = row.children[columnIndex].textContent.trim().toLowerCase();
+
+        // Example: Filtering based on substring match
+        if (cellValue.includes(filterValue.toLowerCase())) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
+// Your additional functions and logic go here
+
+// ... (Other functions)
+
+// Example: Adding random colors to cells on button click
+const addColorsButton = document.getElementById('addColorsButton');
+addColorsButton.addEventListener('click', () => {
+    addColorsToCells();
+});
+
+// Example: Adding event listeners for sorting and filtering
+const sortButton = document.getElementById('sortButton');
+sortButton.addEventListener('click', () => {
+    handleSorting(0); // Sort based on the first column (index 0)
+});
+
+const filterButton = document.getElementById('filterButton');
+filterButton.addEventListener('click', () => {
+    handleFiltering(1, 'desiredFilterValue'); // Filter based on the second column (index 1) and a specific value
+});
+
+// Fetch data and render table on page load
+document.addEventListener('DOMContentLoaded', async () => {
+    const scheduleData = await fetchData();
+    if (scheduleData) {
+        renderTable(scheduleData.data);
+    }
+});
+</script>
+
 </body>
 </html>
