@@ -57,6 +57,10 @@ function handleSorting(columnIndex) {
     rows.forEach(row => {
         tableBody.appendChild(row);
     });
+
+    // Example: Adding random colors to cells in columns 10 to penultimate column
+    const columnsToColor = Array.from({ length: rows[0].children.length / 10 }, (_, i) => i);
+    addColorsToCells(columnsToColor);
 }
 
 // Function to handle filtering
@@ -112,17 +116,19 @@ function renderTable(data) {
     });
 
     // Example: Adding random colors to cells in columns 10 to penultimate column
-    const columnsToColor = Array.from({ length: data.length / 10 }, (_, i) => i);
+    const columnsToColor = Array.from({ length: data[0].length / 10 }, (_, i) => i);
     addColorsToCells(columnsToColor);
 }
 
 // Example: Adding event listeners for sorting and filtering
-const sortButton = document.getElementById('sortButton');
-sortButton.addEventListener('click', () => {
-    handleSorting(0); // Sort based on the first column (index 0)
+const sortButtons = document.querySelectorAll('.sortButton');
+sortButtons.forEach((button, index) => {
+    button.addEventListener('click', () => {
+        handleSorting(index);
+    });
 });
 
 const filterButton = document.getElementById('filterButton');
 filterButton.addEventListener('click', () => {
-    handleFiltering(1, 'desiredFilterValue'); // Filter based on the second column (index 1) and a specific value
+    handleFiltering(1, 'desiredFilterValue');
 });
